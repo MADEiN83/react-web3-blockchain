@@ -38,10 +38,9 @@ contract Player {
     /**
      * Fight.
      */
-    function hit(uint256 index) public returns (PlayerStruct memory) {
+    function hit(uint256 index) public {
         PlayerStruct memory player = getPlayerById(index);
         player.life -= 1;
         players[index] = player;
-        return player;
     }
 }
