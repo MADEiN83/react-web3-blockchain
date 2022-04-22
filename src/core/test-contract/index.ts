@@ -1,39 +1,18 @@
 import web3 from "../web3";
+import json from "./definition.json";
 
 class TestContract {
-  private address = "0xAA8D78ff95Eb4462446629e99D99E42321F077D3";
-  private abi: any = [
-    {
-      inputs: [],
-      name: "get",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "value",
-          type: "uint256",
-        },
-      ],
-      name: "set",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-  ];
+  private address = "0xD796F062E5927df0B7721AED640B93BFEA5B89cD";
   private instance: any;
+  private fromAddress: string = "";
 
   constructor() {
-    this.instance = new web3.eth.Contract(this.abi, this.address);
+    this.instance = new web3.eth.Contract(json.abi as any, this.address);
+
+    web3.eth.getAccounts().then((addresses) => {
+      console.log("Setting up address", addresses[0]);
+      this.fromAddress = addresses[0];
+    });
   }
 
   async get(): Promise<number> {
@@ -45,11 +24,11 @@ class TestContract {
     });
   }
 
-  async set(value: number, from: string): Promise<any> {
+  async set(value: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.instance.methods
         .set(value)
-        .send({ from })
+        .send({ from: this.fromAddress })
         .then(resolve)
         .catch(reject);
     });

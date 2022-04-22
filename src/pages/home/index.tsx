@@ -11,10 +11,7 @@ const Home: React.FC = () => {
   }, []);
 
   const set = useCallback(async () => {
-    const output = await contract.set(
-      Math.round(Math.random() * 10),
-      "0xfBb4AE35b9E24a1b080462F510F812cece15839a"
-    );
+    const output = await contract.set(Math.round(Math.random() * 10));
     console.log("set", output);
   }, []);
 

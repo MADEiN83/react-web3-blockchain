@@ -2,6 +2,15 @@
   "name": "web3js",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "tr:build": "cd ./truffle && npx truffle build",
+    "posttr:build": "cp ./truffle/build/contracts/test.json ./src/core/test-contract/definition.json",
+    "tr:deploy": "cd ./truffle && npx truffle deploy"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
@@ -11,6 +20,7 @@
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
     "react-scripts": "4.0.3",
+    "truffle": "^5.5.11",
     "web3": "^2.0.0-alpha"
   },
   "devDependencies": {
@@ -24,12 +34,6 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "url": "^0.11.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
