@@ -1,17 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
+import "./StatStruct.sol";
+
 contract Player {
     StatStruct[] private players;
-
-    struct StatStruct {
-        string name;
-        int256 maxLife;
-        int256 life;
-        uint256 strength;
-        uint256 experience;
-        uint256 level;
-    }
 
     event PlayerCreated(address indexed _from, StatStruct player);
     event PlayerIsDead(address indexed _from, uint256 counter);

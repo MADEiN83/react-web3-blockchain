@@ -22,5 +22,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-truffle/build/contracts/*.json
+truffle/build/
 src/core/metadata/*.json
