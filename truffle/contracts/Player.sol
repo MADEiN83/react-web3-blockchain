@@ -11,6 +11,7 @@ contract Player {
     }
 
     event PlayerCreated(address indexed _from, StatStruct player);
+    event PlayerIsDead(address indexed _from, uint256 counter);
 
     function create(
         string memory name,
@@ -54,5 +55,7 @@ contract Player {
     function remove(uint256 index) public {
         players[index] = players[players.length - 1];
         players.pop();
+
+        emit PlayerIsDead(msg.sender, players.length);
     }
 }

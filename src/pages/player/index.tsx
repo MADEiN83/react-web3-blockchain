@@ -45,7 +45,13 @@ const Player = () => {
   // }, []);
 
   const getPlayers = useCallback(() => {
-    contract.methods.getPlayers().call().then(setPlayers);
+    contract.methods
+      .getPlayers()
+      .call()
+      .then((players: any) => {
+        setPlayers(players);
+        setPlayersCount(players.length);
+      });
   }, []);
 
   const hit = useCallback(() => {
@@ -67,12 +73,33 @@ const Player = () => {
       setFrom(addresses[0]);
     });
 
-    contract.events.PlayerCreated({ fromBlock: 0 }).on("data", () => {
-      refreshCounter();
-      getPlayers();
-    });
+    contract.events
+      .PlayerCreated({
+        fromBlock: "latest",
+        toBlock: "pending",
+      })
+      .on("data", () => {
+        refreshCounter();
+        console.log("agN");
+        getPlayers();
+      });
 
-    refreshCounter();
+    contract.events
+      .PlayerIsDead({
+        fromBlock: "latest",
+        toBlock: "pending",
+      })
+      .on("data", (data: any) => {
+        const {
+          returnValues: {
+            counter: { _hex },
+          },
+        } = data;
+
+        setPlayersCount(parseInt(_hex, 16));
+      });
+
+    getPlayers();
   }, [refreshCounter, getPlayers]);
 
   return (
