@@ -39,8 +39,16 @@ contract Player {
      * Fight.
      */
     function hit(uint256 index) public {
-        PlayerStruct memory player = getPlayerById(index);
+        PlayerStruct storage player = players[index];
         player.life -= 1;
-        players[index] = player;
+
+        if (player.life <= 0) {
+            remove(index);
+        }
+    }
+
+    function remove(uint256 index) public {
+        players[index] = players[players.length - 1];
+        players.pop();
     }
 }
