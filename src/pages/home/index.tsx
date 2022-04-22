@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 import TestContract from "../../core/test-contract";
+import Player from "../player";
 
 const contract = new TestContract();
 
@@ -42,6 +43,8 @@ const Home: React.FC = () => {
 
   return (
     <div>
+      <Player />
+      <hr />
       <button onClick={set}>set</button>
       <button onClick={get}>get</button>
       <input

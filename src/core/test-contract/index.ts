@@ -1,6 +1,6 @@
 import { Event } from "../types/event.type";
 import web3 from "../web3";
-import json from "./definition.json";
+import json from "../metadata/Test.json";
 
 class TestContract {
   private instance: any;
