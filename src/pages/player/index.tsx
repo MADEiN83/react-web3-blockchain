@@ -6,6 +6,12 @@ import Create from "./components/create";
 import Get from "./components/get";
 import Hit from "./components/hit";
 
+export type PlayerType = {
+  name: string;
+  life: { _hex: string };
+  strength: { _hex: string };
+};
+
 const contract = new web3.eth.Contract(
   json.abi as any,
   json.networks[5777].address
@@ -14,17 +20,11 @@ const contract = new web3.eth.Contract(
 const Player = () => {
   const [from, setFrom] = useState("");
   const [playersCount, setPlayersCount] = useState(0);
-  const [players, setPlayers] = useState<
-    {
-      name: string;
-      life: { _hex: string };
-      strength: { _hex: string };
-    }[]
-  >([]);
+  const [players, setPlayers] = useState<PlayerType[]>([]);
 
   const createPlayer = useCallback(
-    async (name: string) => {
-      await contract.methods.create(name, 3, 10).send({
+    async (name: string, life: number, strength: number) => {
+      await contract.methods.create(name, life, strength).send({
         from,
         gas: 6721975,
         gasPrice: "30000000",
@@ -54,19 +54,21 @@ const Player = () => {
       });
   }, []);
 
-  const hit = useCallback(() => {
-    const playerId = 0; // TODO: get player id from UI.
-    contract.methods
-      .hit(playerId)
-      .send({
-        from,
-        gas: 6721975,
-        gasPrice: "30000000",
-      })
-      .then((e: any) => console.log(e));
+  const hit = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      contract.methods
+        .hit(fromIndex, toIndex)
+        .send({
+          from,
+          gas: 6721975,
+          gasPrice: "30000000",
+        })
+        .then((e: any) => console.log(e));
 
-    getPlayers();
-  }, [from, getPlayers]);
+      getPlayers();
+    },
+    [from, getPlayers]
+  );
 
   useEffect(() => {
     web3.eth.getAccounts().then((addresses) => {
@@ -80,7 +82,6 @@ const Player = () => {
       })
       .on("data", () => {
         refreshCounter();
-        console.log("agN");
         getPlayers();
       });
 
@@ -115,7 +116,7 @@ const Player = () => {
         <Get onGetPlayers={getPlayers} />
         <br />
         <br />
-        <Hit onHit={hit} />
+        <Hit onHit={hit} players={players} />
       </div>
 
       <div style={{ flex: 2 }}>

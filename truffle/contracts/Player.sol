@@ -43,12 +43,14 @@ contract Player {
     /**
      * Fight.
      */
-    function hit(uint256 index) public {
-        StatStruct storage player = players[index];
-        player.life -= 1;
+    function hit(uint256 fromPlayerIndex, uint256 toPlayerIndex) public {
+        StatStruct storage fromPlayer = players[fromPlayerIndex];
+        StatStruct storage toPlayer = players[toPlayerIndex];
 
-        if (player.life <= 0) {
-            remove(index);
+        toPlayer.life -= fromPlayer.strength;
+
+        if (toPlayer.life <= 0) {
+            remove(toPlayerIndex);
         }
     }
 
