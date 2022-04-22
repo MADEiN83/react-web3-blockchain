@@ -6,7 +6,8 @@ contract Player {
 
     struct StatStruct {
         string name;
-        uint256 life;
+        int256 maxLife;
+        int256 life;
         uint256 strength;
         uint256 experience;
         uint256 level;
@@ -17,10 +18,17 @@ contract Player {
 
     function create(
         string memory name,
-        uint256 life,
+        int256 life,
         uint256 strength
     ) public {
-        StatStruct memory newPlayer = StatStruct(name, life, strength, 0, 0);
+        StatStruct memory newPlayer = StatStruct(
+            name,
+            life,
+            life,
+            strength,
+            0,
+            1
+        );
         players.push(newPlayer);
 
         emit PlayerCreated(msg.sender, newPlayer);
@@ -49,17 +57,42 @@ contract Player {
         StatStruct storage fromPlayer = players[fromPlayerIndex];
         StatStruct storage toPlayer = players[toPlayerIndex];
 
-        toPlayer.life -= fromPlayer.strength;
+        toPlayer.life -= int256(fromPlayer.strength);
 
         if (toPlayer.life <= 0) {
             kill(toPlayerIndex);
+
+            // gain exp on kill.
+            gainExperience(fromPlayerIndex, 51);
+            return;
         }
+
+        // gain exp on hit.
+        gainExperience(fromPlayerIndex, 22);
     }
 
-    function kill(uint256 index) public {
+    function kill(uint256 index) private {
         players[index] = players[players.length - 1];
         players.pop();
 
         emit PlayerIsDead(msg.sender, players.length);
+    }
+
+    function gainExperience(uint256 playerIndex, uint256 experience) private {
+        StatStruct storage player = players[playerIndex];
+
+        player.experience += experience;
+
+        uint256 experienceToReachNextLevel = (player.level + 1) * 100;
+
+        if (player.experience >= experienceToReachNextLevel) {
+            // reset life on level up
+            player.maxLife = player.maxLife + 2;
+            player.life = player.maxLife;
+
+            player.experience -= experienceToReachNextLevel;
+            player.level++;
+            player.strength += 2;
+        }
     }
 }
