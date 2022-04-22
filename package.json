@@ -10,7 +10,8 @@
     "tr:build": "cd ./truffle && npx truffle build",
     "tr:deploy": "cd ./truffle && npx truffle deploy",
     "posttr:deploy": "cp ./truffle/build/contracts/*.json ./src/core/metadata/",
-    "tr:migrate": "cd ./truffle && npx truffle migrate --reset"
+    "tr:migrate": "cd ./truffle && npx truffle migrate --reset",
+    "tr:test": "cd ./truffle && npx truffle test"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",

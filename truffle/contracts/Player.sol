@@ -47,16 +47,20 @@ contract Player {
      * Fight.
      */
     function hit(uint256 fromPlayerIndex, uint256 toPlayerIndex) public {
+        if (players.length == 0) {
+            return;
+        }
+
         StatStruct storage fromPlayer = players[fromPlayerIndex];
         StatStruct storage toPlayer = players[toPlayerIndex];
 
         toPlayer.life -= int256(fromPlayer.strength);
 
         if (toPlayer.life <= 0) {
-            kill(toPlayerIndex);
-
             // gain exp on kill.
             gainExperience(fromPlayerIndex, 51);
+
+            kill(toPlayerIndex);
             return;
         }
 
@@ -76,7 +80,7 @@ contract Player {
 
         player.experience += experience;
 
-        uint256 experienceToReachNextLevel = (player.level + 1) * 100;
+        uint256 experienceToReachNextLevel = (player.level) * 100;
 
         if (player.experience >= experienceToReachNextLevel) {
             // reset life on level up
