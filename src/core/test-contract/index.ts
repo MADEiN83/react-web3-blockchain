@@ -2,7 +2,7 @@ import web3 from "../web3";
 import json from "./definition.json";
 
 class TestContract {
-  private address = "0xD796F062E5927df0B7721AED640B93BFEA5B89cD";
+  private address = "0x03F749862d8c2bBC290DaF819341e88b4359D03A";
   private instance: any;
   private fromAddress: string = "";
 
@@ -28,6 +28,22 @@ class TestContract {
     return new Promise((resolve, reject) => {
       this.instance.methods
         .set(value)
+        .send({ from: this.fromAddress })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  async getString(): Promise<string> {
+    return new Promise((resolve) => {
+      this.instance.methods.getString().call().then(resolve);
+    });
+  }
+
+  async setString(value: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.instance.methods
+        .setString(value)
         .send({ from: this.fromAddress })
         .then(resolve)
         .catch(reject);
