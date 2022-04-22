@@ -8,7 +8,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tr:build": "cd ./truffle && npx truffle build",
-    "posttr:build": "cp ./truffle/build/contracts/test.json ./src/core/test-contract/definition.json",
+    "posttr:build": "cp ./truffle/build/contracts/Test.json ./src/core/test-contract/definition.json",
     "tr:deploy": "cd ./truffle && npx truffle deploy",
     "tr:migrate": "cd ./truffle && npx truffle migrate"
   },
