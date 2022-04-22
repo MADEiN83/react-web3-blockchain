@@ -8,6 +8,8 @@ contract Player {
         string name;
         uint256 life;
         uint256 strength;
+        uint256 experience;
+        uint256 level;
     }
 
     event PlayerCreated(address indexed _from, StatStruct player);
@@ -18,7 +20,7 @@ contract Player {
         uint256 life,
         uint256 strength
     ) public {
-        StatStruct memory newPlayer = StatStruct(name, life, strength);
+        StatStruct memory newPlayer = StatStruct(name, life, strength, 0, 0);
         players.push(newPlayer);
 
         emit PlayerCreated(msg.sender, newPlayer);
@@ -50,11 +52,11 @@ contract Player {
         toPlayer.life -= fromPlayer.strength;
 
         if (toPlayer.life <= 0) {
-            remove(toPlayerIndex);
+            kill(toPlayerIndex);
         }
     }
 
-    function remove(uint256 index) public {
+    function kill(uint256 index) public {
         players[index] = players[players.length - 1];
         players.pop();
 

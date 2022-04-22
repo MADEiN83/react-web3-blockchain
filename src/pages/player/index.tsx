@@ -10,6 +10,8 @@ export type PlayerType = {
   name: string;
   life: { _hex: string };
   strength: { _hex: string };
+  experience: { _hex: string };
+  level: { _hex: string };
 };
 
 const contract = new web3.eth.Contract(
@@ -130,6 +132,8 @@ const Player = () => {
               <li>name: {player.name}</li>
               <li>life: {parseInt(player.life._hex, 16)}</li>
               <li>strength: {parseInt(player.strength._hex, 16)}</li>
+              <li>experience: {parseInt(player.experience._hex, 16)}</li>
+              <li>level: {parseInt(player.level._hex, 16)}</li>
             </ul>
           </div>
         ))}
