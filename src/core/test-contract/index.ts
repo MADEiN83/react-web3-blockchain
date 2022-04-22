@@ -1,8 +1,9 @@
+import { Event } from "../types/event.type";
 import web3 from "../web3";
 import json from "./definition.json";
 
 class TestContract {
-  private address = "0x03F749862d8c2bBC290DaF819341e88b4359D03A";
+  private address = "0x5ED3c0DD9DE5EFB2C042c42dd35604a1B10a554D";
   private instance: any;
   private fromAddress: string = "";
 
@@ -49,6 +50,19 @@ class TestContract {
         .catch(reject);
     });
   }
+
+  // StringHasChanged
+  listen = (eventName: string, callback: (event: Event) => void) => {
+    const options = {
+      fromBlock: 0,
+    };
+
+    this.instance.events?.[eventName](options)
+      .on("data", callback)
+      .on("changed", (changed: any) => console.log("changed", changed))
+      .on("error", (err: any) => console.error("error", err))
+      .on("connected", (str: any) => console.log("connected", str));
+  };
 }
 
 export default TestContract;
